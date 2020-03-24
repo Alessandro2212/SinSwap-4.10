@@ -1,4 +1,4 @@
-﻿@model VendorModel
+@model VendorModel
 @using Nop.Core.Domain.Seo
 @inject Nop.Core.IWebHelper webHelper
 @inject SeoSettings seoSettings
@@ -25,7 +25,8 @@
     </div>
     <div class="page-body">
         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.VendorDetailsTop, additionalData = Model })
-        @*description*@
+        @await Component.InvokeAsync("Widget", new { widgetZone = "VendorDetailsEnhanced", additionalData = Model })
+@*description*@
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
             <div class="vendor-description">

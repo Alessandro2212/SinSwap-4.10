@@ -1,0 +1,74 @@
+﻿@model Nop.Plugin.Misc.VendorEnhanced.Models.VendorReviewModel
+
+@using Nop.Web.Framework.Infrastructure
+
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    Html.AddTitleParts(Model.VendorName);
+    Html.AddTitleParts(T("PageTitle.VendorReview").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-product-reviews-page");
+}
+<div class="page product-reviews-page">
+    <div class="page-title">
+        <h1>@T("VendorEnhanced.VendorReviewFor") <a href="@Url.RouteUrl("Vendor", new { SeName = Model.VendorSeName })">@Model.VendorName</a></h1>
+    </div>
+    <div class="page-body">
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductReviewsPageTop, additionalData = Model })
+        @if (Model.SuccessfullyVendorReviewed)
+        {
+            <div class="result">
+                @Model.Result
+            </div>
+        }
+        else
+        {
+            <div class="write-review" id="review-form">
+                <div class="title">
+                    <strong>@T("Reviews.Write")</strong>
+                </div>
+                <form asp-route="VendorReviews" method="post">
+                    <div asp-validation-summary="ModelOnly" class="message-error"></div>
+                    <div class="fieldset">
+                        <div class="form-fields">
+                            <div class="inputs">
+                                <label asp-for="Title" asp-postfix=":"></label>
+                                <input asp-for="Title" class="review-title" />
+                                <nop-required />
+                                <span asp-validation-for="Title"></span>
+                            </div>
+                            <div class="inputs">
+                                <label asp-for="ReviewText" asp-postfix=":"></label>
+                                <textarea asp-for="ReviewText" class="review-text"></textarea>
+                                <nop-required />
+                                <span asp-validation-for="ReviewText"></span>
+                            </div>
+                            <div class="review-rating">
+                                <div class="name-description">
+                                    <label asp-for="Rating" asp-postfix=":"></label>
+                                </div>
+                                <div class="rating-wrapper">
+                                    <div class="label first">@T("Reviews.Fields.Rating.Bad")</div>
+                                    <div class="rating-options">
+                                        <input asp-for="Rating" value="1" type="radio" id="addvendorrating_1" />
+                                        <input asp-for="Rating" value="2" type="radio" id="addvendorrating_2" />
+                                        <input asp-for="Rating" value="3" type="radio" id="addvendorrating_3" />
+                                        <input asp-for="Rating" value="4" type="radio" id="addvendorrating_4" />
+                                        <input asp-for="Rating" value="5" type="radio" id="addvendorrating_5" />
+                                    </div>
+                                    <div class="label last">@T("Reviews.Fields.Rating.Excellent")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <input type="submit" name="add-review" class="button-1 write-product-review-button" value="@T("Reviews.SubmitButton")" />
+                    </div>
+                </form>
+            </div>
+        }
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductReviewsPageBottom, additionalData = Model })
+    </div>
+</div>

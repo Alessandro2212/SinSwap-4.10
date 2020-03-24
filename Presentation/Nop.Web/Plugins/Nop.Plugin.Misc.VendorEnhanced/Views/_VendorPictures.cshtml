@@ -1,0 +1,224 @@
+﻿@model Nop.Plugin.Misc.VendorEnhanced.Models.VendorModel
+
+<div class="panel-group">
+    @if (Model.Id > 0)
+    {
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div id="vendorpictures-grid"></div>
+
+            <script>
+                    $(document).ready(function() {
+                        $("#vendorpictures-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "/VendorEnhanced/VendorPictureList",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: function() {
+                                            var data = {
+                                                VendorId: '@(Model.Id)'
+                                            };
+                                            addAntiForgeryToken(data);
+                                            return data;
+                                        }
+                                    },
+                                    update: {
+                                        url: "/VendorEnhanced/VendorPictureUpdate",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    destroy: {
+                                        url: "/VendorEnhanced/VendorPictureDelete",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors",
+                                    model: {
+                                        id: "Id",
+                                        fields: {
+                                            PictureUrl: { editable: false, type: "string" },
+                                            DisplayOrder: { editable: true, type: "number" },
+                                            OverrideAltAttribute: { editable: true, type: "string" },
+                                            OverrideTitleAttribute: { editable: true, type: "string" }
+                                        }
+                                    }
+                                },
+                                requestEnd: function(e) {
+                                    if (e.type == "update") {
+                                        this.read();
+                                    }
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                pageSize: @(Model.VendorPictureSearchModel.PageSize),
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                pageSizes: [@(Model.VendorPictureSearchModel.AvailablePageSizes)],
+                                @await Html.PartialAsync("_GridPagerMessages")
+                            },
+                            editable: {
+                                confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            columns: [
+                            {
+                                field: "PictureUrl",
+                                title: "@T("Admin.Catalog.Products.Pictures.Fields.Picture")",
+                                template: '<a href="#:PictureUrl#" target="_blank"><img alt="#:PictureId#" src="#:PictureUrl#" width="150" /></a>',
+                                width: 200
+                            }, {
+                                field: "DisplayOrder",
+                                title: "@T("Admin.Catalog.Products.Pictures.Fields.DisplayOrder")",
+                                //integer format
+                                format: "{0:0}",
+                                width: 150
+                            }, {
+                                field: "OverrideAltAttribute",
+                                title: "@T("Admin.Catalog.Products.Pictures.Fields.OverrideAltAttribute")",
+                                width: 200
+                            }, {
+                                field: "OverrideTitleAttribute",
+                                title: "@T("Admin.Catalog.Products.Pictures.Fields.OverrideTitleAttribute")",
+                                width: 200
+                            }, {
+                                command: [
+                                {
+                                    name: "edit",
+                                    text: {
+                                        edit: "@T("Admin.Common.Edit")",
+                                        update: "@T("Admin.Common.Update")",
+                                        cancel: "@T("Admin.Common.Cancel")"
+                                    }
+                                }, {
+                                    name: "destroy",
+                                    text: "@T("Admin.Common.Delete")"
+                                }
+                                ],
+                                width: 200
+                            }
+                            ]
+                        });
+                    });
+            </script>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            @T("Admin.Catalog.Products.Pictures.AddNew")
+        </div>
+        <div class="panel-body">
+            <script>
+                    $(document).ready(function() {
+                        $('#addVendorPicture').click(function() {
+                            var pictureId = $("#@Html.IdFor(model => model.AddPictureModel.PictureId)").val();
+                            var overrideAltAttribute = $("#@Html.IdFor(model => model.AddPictureModel.OverrideAltAttribute)").val();
+                            var overrideTitleAttribute = $("#@Html.IdFor(model => model.AddPictureModel.OverrideTitleAttribute)").val();
+                            var displayOrder = $("#@Html.IdFor(model => model.AddPictureModel.DisplayOrder)").val();
+
+                            if (pictureId == 0) {
+                                alert('Upload picture first');
+                                return;
+                            }
+
+                            $('#addVendorPicture').attr('disabled', true);
+
+                            var postData = {
+                                pictureId: pictureId,
+                                displayOrder: displayOrder,
+                                overrideAltAttribute: overrideAltAttribute,
+                                overrideTitleAttribute: overrideTitleAttribute,
+                                VendorId: '@Model.Id'
+                            };
+                            addAntiForgeryToken(postData);
+
+                            $.ajax({
+                                cache: false,
+                                type: "POST",
+                                url: "/VendorEnhanced/VendorPictureAdd",
+                                data: postData,
+                                success: function (data) {
+                                    $('#addVendorPicture').attr('disabled', false);
+                                    if (!data.Result)
+                                        return;
+                                    var grid = $("#vendorpictures-grid");
+                                    grid.data('kendoGrid').dataSource.read();
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                    alert('Failed to add vendor picture.');
+                                    $('#addVendorPicture').attr('disabled', false);
+                                }
+                            });
+                        });
+                    });
+            </script>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <nop-label asp-for="AddPictureModel.PictureId" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="AddPictureModel.PictureId" />
+                    <span asp-validation-for="AddPictureModel.PictureId"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <nop-label asp-for="AddPictureModel.OverrideAltAttribute" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="AddPictureModel.OverrideAltAttribute" />
+                    <span asp-validation-for="AddPictureModel.OverrideAltAttribute"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <nop-label asp-for="AddPictureModel.OverrideTitleAttribute" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="AddPictureModel.OverrideTitleAttribute" />
+                    <span asp-validation-for="AddPictureModel.OverrideTitleAttribute"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3">
+                    <nop-label asp-for="AddPictureModel.DisplayOrder" />
+                </div>
+                <div class="col-md-9">
+                    <nop-editor asp-for="AddPictureModel.DisplayOrder" />
+                    <span asp-validation-for="AddPictureModel.DisplayOrder"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-9 col-md-offset-3">
+                    <button type="button" id="addVendorPicture" class="btn btn-primary">@T("VendorEnhanced.AddPicturesButton")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+    else
+    {
+    <div class="panel panel-default">
+        <div class="panel-body">
+            @T("VendorEnhanced.PicturesSaveBeforeEdit")
+        </div>
+    </div>
+    }
+</div>
