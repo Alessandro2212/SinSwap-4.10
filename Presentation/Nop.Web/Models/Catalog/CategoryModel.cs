@@ -35,6 +35,7 @@ namespace Nop.Web.Models.Catalog
         public IList<ProductOverviewModel> FeaturedProducts { get; set; }
         public IList<ProductOverviewModel> Products { get; set; }
 
+
 		#region Nested Classes
 
         public partial class SubCategoryModel : BaseNopEntityModel
@@ -51,6 +52,8 @@ namespace Nop.Web.Models.Catalog
             public string Description { get; set; }
 
             public PictureModel PictureModel { get; set; }
+
+            public bool IsFavourite { get; set; }
         }
 
 		#endregion

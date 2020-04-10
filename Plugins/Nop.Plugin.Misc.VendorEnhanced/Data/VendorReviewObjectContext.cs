@@ -121,6 +121,20 @@ namespace Nop.Plugin.Misc.VendorEnhanced.Data
             //drop the table
             this.DropPluginTable(nameof(VendorReviewRecord));
         }
+
+        public int ExecuteSqlCommand<TEntity>(RawSqlString sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
+        {
+            using (var transaction = this.Database.BeginTransaction())
+            {
+                var result = this.Database.ExecuteSqlCommand(sql, parameters);
+
+                transaction.Commit();
+
+                return result;
+            }
+
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

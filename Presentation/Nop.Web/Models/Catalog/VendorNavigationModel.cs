@@ -20,5 +20,7 @@ namespace Nop.Web.Models.Catalog
         public string Name { get; set; }
 
         public string SeName { get; set; }
+
+        //public VendorReviewModel MyProperty { get; set; }
     }
 }

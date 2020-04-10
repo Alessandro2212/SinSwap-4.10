@@ -57,6 +57,8 @@ namespace Nop.Data
         /// <returns>The number of rows affected</returns>
         int ExecuteSqlCommand(RawSqlString sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters);
 
+        //int ExecuteSqlCommand<TEntity>(RawSqlString sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters);
+
         /// <summary>
         /// Detach an entity from the context
         /// </summary>
