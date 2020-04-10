@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Nop.Core;
+using Nop.Core.Domain.Vendors;
 using Nop.Data;
 using Nop.Data.Extensions;
-using Nop.Plugin.Misc.VendorEnhanced.DataMappings;
-using Nop.Plugin.Misc.VendorEnhanced.Domain;
+using Nop.Data.Mapping.Vendors;
+//using Nop.Plugin.Misc.VendorEnhanced.DataMappings;
+//using Nop.Plugin.Misc.VendorEnhanced.Domain;
 
 namespace Nop.Plugin.Misc.VendorEnhanced.Data
 {

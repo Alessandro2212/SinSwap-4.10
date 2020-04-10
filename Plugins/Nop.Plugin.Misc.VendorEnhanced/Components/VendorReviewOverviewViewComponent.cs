@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
-using Nop.Plugin.Misc.VendorEnhanced.Domain;
+using Nop.Core.Domain.Vendors;
+//using Nop.Plugin.Misc.VendorEnhanced.Domain;
 using Nop.Plugin.Misc.VendorEnhanced.Services;
 using Nop.Services.Configuration;
+using Nop.Services.Vendors;
 using Nop.Web.Framework.Components;
 using System;
 

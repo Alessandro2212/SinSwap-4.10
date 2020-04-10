@@ -81,6 +81,10 @@
    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
  </ItemGroup>
+ <ItemGroup>
+   <Folder Include="DataMappings\" />
+   <Folder Include="Domain\" />
+ </ItemGroup>
 
   <Target Name="FilterCopyLocalItems" AfterTargets="ResolveLockFileCopyLocalProjectDeps">
     <ItemGroup>

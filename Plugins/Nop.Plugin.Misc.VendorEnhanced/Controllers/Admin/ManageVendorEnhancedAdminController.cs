@@ -9,7 +9,9 @@ using Nop.Web.Framework.Mvc.Filters;
 using System.Linq;
 using Nop.Core.Domain.Customers;
 using System.Collections.Generic;
-using Nop.Plugin.Misc.VendorEnhanced.Domain;
+using Nop.Core.Domain.Vendors;
+using Nop.Services.Vendors;
+//using Nop.Plugin.Misc.VendorEnhanced.Domain;
 
 namespace Nop.Plugin.Misc.VendorEnhanced.Controllers.Admin
 {

@@ -2,12 +2,14 @@ using Autofac;
 using Autofac.Core;
 using Nop.Core.Configuration;
 using Nop.Core.Data;
+using Nop.Core.Domain.Vendors;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
 using Nop.Data;
 using Nop.Plugin.Misc.VendorEnhanced.Data;
-using Nop.Plugin.Misc.VendorEnhanced.Domain;
+//using Nop.Plugin.Misc.VendorEnhanced.Domain;
 using Nop.Plugin.Misc.VendorEnhanced.Services;
+using Nop.Services.Vendors;
 using Nop.Web.Framework.Infrastructure.Extensions;
 
 namespace Nop.Plugin.Misc.VendorEnhanced.Infrastructure

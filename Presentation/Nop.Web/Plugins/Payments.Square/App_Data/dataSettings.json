@@ -1,5 +1,0 @@
-﻿{
-  "DataProvider": "sqlserver",
-  "DataConnectionString": "Data Source=ALEZELLI\\SQLEXPRESS;Initial Catalog=SinSwap;Integrated Security=False;Persist Security Info=False;User ID=sa;Password=AlessandroFra22121987!",
-  "RawDataSettings": {}
-}

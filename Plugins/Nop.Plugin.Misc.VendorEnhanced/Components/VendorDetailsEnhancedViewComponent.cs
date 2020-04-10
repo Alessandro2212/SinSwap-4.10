@@ -4,7 +4,7 @@ using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Vendors;
-using Nop.Plugin.Misc.VendorEnhanced.Domain;
+//using Nop.Plugin.Misc.VendorEnhanced.Domain;
 using Nop.Plugin.Misc.VendorEnhanced.Models;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;

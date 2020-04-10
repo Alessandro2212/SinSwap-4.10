@@ -12,6 +12,7 @@ using Nop.Services.Common;
 using Nop.Services.Localization;
 using Nop.Services.Media;
 using Nop.Services.Vendors;
+using Nop.Web.Models.Media;
 using Nop.Web.Models.MiniVendors;
 using Nop.Web.Models.Vendors;
 
@@ -25,15 +26,17 @@ namespace Nop.Web.Factories
 
         private readonly IPictureService _pictureService;
         private readonly IVendorService _vendorService;
-        //private readonly IRepository<VendorPictureRecord> _vendorPictureRecordRepository;
+        private readonly IRepository<VendorPictureRecord> _vendorPictureRecordRepository;
 
         public MiniVendorModelFactory(
            IPictureService pictureService,
-           IVendorService vendorService)
+           IVendorService vendorService,
+           IRepository<VendorPictureRecord> vendorPictureRecordRepository)
         {          
             this._pictureService = pictureService;
             this._vendorService = vendorService;
-         
+            this._vendorPictureRecordRepository = vendorPictureRecordRepository;
+
         }
         public TopMiniVendorModel PrepareTopCategoryMiniVendorModel()
         {
@@ -47,8 +50,7 @@ namespace Nop.Web.Factories
         /// </summary>
         /// <returns></returns>
         public TopMiniVendorModel PrepareTopMiniVendorModel()
-        {
-            
+        {          
             var vendors = _vendorService.GetAllVendors();
             
             if(!vendors.Any())
@@ -59,23 +61,22 @@ namespace Nop.Web.Factories
 
             foreach(Vendor vendor in vendors.ToList())
             {
+                var query = from pp in _vendorPictureRecordRepository.Table
+                            where pp.VendorId == vendor.Id
+                            orderby pp.DisplayOrder, pp.Id
+                            select pp;
+                
+                var vendorPictures = query.ToList().FirstOrDefault();      
+                var picture = _pictureService.GetPictureById(vendorPictures.PictureId);
+
+                miniVendors.Add(new MiniVendorModel { Id = vendor.Id, Name = vendor.Name, City = vendor.City, PictureUrl = _pictureService.GetPictureUrl(picture) });
 
             }
 
-            vendors.ToList().ForEach(x => { miniVendors.Add(new MiniVendorModel 
-                    { 
-                        Id = x.Id,
-                        Name = x.Name
-                        //Age = x.
-                        
-                    } 
-                ); 
-            });
+            if(miniVendors.Any())
+                model.MiniVendors = new List<MiniVendorModel>(miniVendors);
 
-                
-            
-
-            return new TopMiniVendorModel { };
+            return model;
         }
     }
 }

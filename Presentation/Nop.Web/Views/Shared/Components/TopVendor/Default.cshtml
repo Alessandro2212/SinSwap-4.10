@@ -1,24 +1,30 @@
-﻿@model VendorNavigationModel
-@if (Model.Vendors.Count > 0)
+﻿@model Nop.Web.Models.MiniVendors.TopMiniVendorModel
+@if (Model.MiniVendors.Count > 0)
 {
     <div class="block block-vendor-navigation">
         <div class="title">
-            <strong>@T("Vendors")</strong>
+            <strong>@T("Our Top Sellers")</strong>
         </div>
         <div class="listbox">
             <ul class="list">
-                @foreach (var vendor in Model.Vendors)
+                @foreach (var vendor in Model.MiniVendors)
                 {
-                    <li><a href="@Url.RouteUrl("Vendor", new { SeName = vendor.SeName })">@vendor.Name</a>
-                    </li>
+                <li>
+                    <div>
+                        <strong>@vendor.Name</strong>
+                        <img src="@Url.Content(vendor.PictureUrl)" alt="Image" style="width:128px;height:128px;" />
+                    </div>
+                    
+                    @*<a href="@Url.RouteUrl("Vendor", new { SeName = vendor.SeName })">@vendor.Name</a>*@
+                </li>
                 }
-            </ul>            
-            @if (Model.TotalVendors > Model.Vendors.Count)
+            </ul>
+            @*@if (Model.TotalVendors > Model.Vendors.Count)
             {
                 <div class="view-all">
                     <a href="@Url.RouteUrl("VendorList")">@T("Vendors.ViewAll")</a>
                 </div>
-            }
+            }*@
         </div>
     </div>
 }

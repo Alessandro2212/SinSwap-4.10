@@ -24,7 +24,7 @@ namespace Nop.Web.Components
                 return Content("");
 
             var model = _miniVendorModelFactory.PrepareTopMiniVendorModel();
-            if (!model.MiniVendors.Any())
+            if (model == null || !model.MiniVendors.Any())
                 return Content("");
 
             return View(model);
