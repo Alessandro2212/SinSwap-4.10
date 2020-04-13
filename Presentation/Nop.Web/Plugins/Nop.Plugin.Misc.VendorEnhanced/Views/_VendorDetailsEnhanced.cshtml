@@ -1,0 +1,131 @@
+﻿@model Nop.Plugin.Misc.VendorEnhanced.Models.VendorDetailsPicturesModel
+
+@{
+    Html.AddScriptParts(ResourceLocation.Footer, "~/lib/magnific-popup/jquery.magnific-popup.min.js");
+    Html.AddCssFileParts("~/lib/magnific-popup/magnific-popup.css");
+}
+
+@if (ViewBag.EnableVendorQRCode == true || ViewBag.EnableVendorPictures == true)
+{
+    <script>
+        $(function () {
+            $("#tabs").tabs({ active: 0 });
+        });
+    </script>
+
+    <div id="tabs">
+        <ul>
+            @if (ViewBag.EnableVendorQRCode == true)
+            {
+                <li><a href="#tab-qrcode">@T("VendorEnhanced.QRCode")</a></li>
+            }
+
+            @if (ViewBag.EnableVendorPictures == true)
+            {
+                <li><a href="#tab-pictures">@T("VendorEnhanced.Pictures")</a></li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            @if (ViewBag.EnableVendorQRCode == true)
+            {
+                <div id="tab-qrcode">
+                    @if (ViewBag.QRCodeImage != "")
+                    {
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <img src="@ViewBag.QRCodeImage" alt="" style="height:300px; width:300px;" />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @T("Admin.Pager.Empty")
+                            </div>
+                        </div>
+                        <br /><br />
+                    }
+                </div>
+            }
+
+            @if (ViewBag.EnableVendorPictures == true)
+            {
+                <style>
+                    .gallery {
+                        float: none !important;
+                        margin: 0px !important;
+                    }
+                </style>
+                <div id="tab-pictures">
+                    @if (Model.PictureModels.Count != 0)
+                    {
+                        <div class="gallery">
+                            <div class="picture">
+                                @if (Model.DefaultPictureZoomEnabled)
+                                {
+                                    <a href="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-lightbox-anchor-@Model.Id">
+                                        <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+                                    </a>
+                                    <script asp-location="Footer">
+                                        $(document).ready(function () {
+                                            $('#main-product-img-lightbox-anchor-@Model.Id').magnificPopup(
+                                                {
+                                                    type: 'image',
+                                                    removalDelay: 300,
+                                                    gallery: {
+                                                        enabled: true,
+                                                        tPrev: '@T("Media.MagnificPopup.Previous")',
+                                                        tNext: '@T("Media.MagnificPopup.Next")',
+                                                        tCounter: '@T("Media.MagnificPopup.Counter")'
+                                                    },
+                                                    tClose: '@T("Media.MagnificPopup.Close")',
+                                                    tLoading: '@T("Media.MagnificPopup.Loading")'
+                                                });
+                                        });
+                                    </script>
+                                }
+                                else
+                                {
+                                    <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" itemprop="image" id="main-product-img-@Model.Id" />
+                                }
+                            </div>
+                            @if (Model.PictureModels.Count > 1)
+                            {
+                                <div class="picture-thumbs">
+                                    @foreach (var picture in Model.PictureModels)
+                                    {
+                                        <div class="thumb-item">
+                                            <img src="@picture.ThumbImageUrl" alt="@picture.AlternateText" title="@picture.Title" data-defaultsize="@picture.ImageUrl" data-fullsize="@picture.FullSizeImageUrl" />
+                                        </div>
+                                    }
+                                </div>
+                                <script asp-location="Footer">
+                                    $(document).ready(function () {
+                                        $('.thumb-item img').on('click', function () {
+                                            $('#main-product-img-@Model.Id').attr('src', $(this).attr('data-defaultsize'));
+                                            $('#main-product-img-@Model.Id').attr('title', $(this).attr('title'));
+                                            $('#main-product-img-@Model.Id').attr('alt', $(this).attr('alt'));
+                                            $('#main-product-img-lightbox-anchor-@Model.Id').attr('href', $(this).attr('data-fullsize'));
+                                            $('#main-product-img-lightbox-anchor-@Model.Id').attr('title', $(this).attr('title'));
+                                        });
+                                    });
+                                </script>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @T("Admin.Pager.Empty")
+                            </div>
+                        </div>
+                        <br /><br />
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}

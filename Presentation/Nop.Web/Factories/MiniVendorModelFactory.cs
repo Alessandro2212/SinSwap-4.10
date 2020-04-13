@@ -72,8 +72,10 @@ namespace Nop.Web.Factories
                             orderby pp.DisplayOrder, pp.Id
                             select pp;
                 
-                var vendorPictures = query.ToList().FirstOrDefault();      
-                var picture = _pictureService.GetPictureById(vendorPictures.PictureId);
+                var vendorPictures = query.ToList().FirstOrDefault();
+                Picture picture = null;
+                if (vendorPictures != null)
+                    picture = _pictureService.GetPictureById(vendorPictures.PictureId);
 
                 miniVendors.Add(new MiniVendorModel { 
                         Id = vendor.Id, 

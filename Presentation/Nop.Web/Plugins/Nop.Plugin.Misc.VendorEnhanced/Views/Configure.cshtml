@@ -1,0 +1,47 @@
+﻿@model Nop.Plugin.Misc.VendorEnhanced.Models.ConfigurationModel
+
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+<form asp-controller="VendorEnhanced" asp-action="Configure" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @T("Plugins.Nop.Plugin.Misc.VendorEnhanced.Instructions")
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="EnableVendorReview" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableVendorReview" />
+                        <span asp-validation-for="EnableVendorReview"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="EnableVendorQRCode" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableVendorQRCode" />
+                        <span asp-validation-for="EnableVendorQRCode"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="EnableVendorPictures" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableVendorPictures" />
+                        <span asp-validation-for="EnableVendorPictures"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
