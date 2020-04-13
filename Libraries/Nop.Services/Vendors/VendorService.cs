@@ -5,6 +5,7 @@ using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Vendors;
 using Nop.Core.Html;
+using Nop.Data;
 using Nop.Services.Events;
 
 namespace Nop.Services.Vendors
@@ -19,6 +20,7 @@ namespace Nop.Services.Vendors
         private readonly IEventPublisher _eventPublisher;
         private readonly IRepository<Vendor> _vendorRepository;
         private readonly IRepository<VendorNote> _vendorNoteRepository;
+        private readonly IDbContext _dbContext;
 
         #endregion
 
@@ -26,11 +28,13 @@ namespace Nop.Services.Vendors
 
         public VendorService(IEventPublisher eventPublisher,
             IRepository<Vendor> vendorRepository,
-            IRepository<VendorNote> vendorNoteRepository)
+            IRepository<VendorNote> vendorNoteRepository,
+            IDbContext dbContext)
         {
             this._eventPublisher = eventPublisher;
             this._vendorRepository = vendorRepository;
             this._vendorNoteRepository = vendorNoteRepository;
+            this._dbContext = dbContext;
         }
 
         #endregion
@@ -75,6 +79,21 @@ namespace Nop.Services.Vendors
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Vendors</returns>
         public virtual IPagedList<Vendor> GetAllVendors(string name = "", int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        {
+            var query = _vendorRepository.Table;
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(v => v.Name.Contains(name));
+            if (!showHidden)
+                query = query.Where(v => v.Active);
+
+            query = query.Where(v => !v.Deleted);
+            query = query.OrderBy(v => v.DisplayOrder).ThenBy(v => v.Name);
+
+            var vendors = new PagedList<Vendor>(query, pageIndex, pageSize);
+            return vendors;
+        }
+
+        public virtual IPagedList<Vendor> GetAllTopXVendors(string name = "", int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
         {
             var query = _vendorRepository.Table;
             if (!string.IsNullOrWhiteSpace(name))

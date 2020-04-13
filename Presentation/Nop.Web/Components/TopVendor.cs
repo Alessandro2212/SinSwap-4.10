@@ -23,8 +23,8 @@ namespace Nop.Web.Components
             if (_vendorSettings.VendorsBlockItemsToDisplay == 0)
                 return Content("");
 
-            var model = _miniVendorModelFactory.PrepareTopMiniVendorModel();
-            if (model == null || !model.MiniVendors.Any())
+            var model = _miniVendorModelFactory.PrepareTopMiniVendorModel(5);
+            if (model == null || model.MiniVendors == null || !model.MiniVendors.Any())
                 return Content("");
 
             return View(model);

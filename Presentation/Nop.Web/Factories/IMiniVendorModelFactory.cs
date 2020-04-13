@@ -8,9 +8,9 @@ namespace Nop.Web.Factories
 {
     public partial interface IMiniVendorModelFactory
     {
-        TopMiniVendorModel PrepareTopMiniVendorModel();
+        TopMiniVendorModel PrepareTopMiniVendorModel(int amount);
 
-        TopMiniVendorModel PrepareTopCategoryMiniVendorModel();
+        TopMiniVendorModel PrepareTopCategoryMiniVendorModel(int amount);
 
     }
 }

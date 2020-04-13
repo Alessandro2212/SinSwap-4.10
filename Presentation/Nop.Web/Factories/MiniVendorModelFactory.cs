@@ -11,6 +11,7 @@ using Nop.Core.Domain.Vendors;
 using Nop.Services.Common;
 using Nop.Services.Localization;
 using Nop.Services.Media;
+using Nop.Services.Seo;
 using Nop.Services.Vendors;
 using Nop.Web.Models.Media;
 using Nop.Web.Models.MiniVendors;
@@ -27,18 +28,22 @@ namespace Nop.Web.Factories
         private readonly IPictureService _pictureService;
         private readonly IVendorService _vendorService;
         private readonly IRepository<VendorPictureRecord> _vendorPictureRecordRepository;
+        private readonly IUrlRecordService _urlRecordService;
+
 
         public MiniVendorModelFactory(
            IPictureService pictureService,
            IVendorService vendorService,
-           IRepository<VendorPictureRecord> vendorPictureRecordRepository)
+           IRepository<VendorPictureRecord> vendorPictureRecordRepository,
+           IUrlRecordService urlRecordService)
         {          
             this._pictureService = pictureService;
             this._vendorService = vendorService;
             this._vendorPictureRecordRepository = vendorPictureRecordRepository;
-
+            this._urlRecordService = urlRecordService;
         }
-        public TopMiniVendorModel PrepareTopCategoryMiniVendorModel()
+
+        public TopMiniVendorModel PrepareTopCategoryMiniVendorModel(int amount)
         {
             //query to retrieve the top vendors of a specific category
 
@@ -49,12 +54,13 @@ namespace Nop.Web.Factories
         /// query to retriever the top (best) vendors of the home page
         /// </summary>
         /// <returns></returns>
-        public TopMiniVendorModel PrepareTopMiniVendorModel()
-        {          
+        public TopMiniVendorModel PrepareTopMiniVendorModel(int amount)
+        {
+            //get top X vendors basing on the reviews
             var vendors = _vendorService.GetAllVendors();
             
             if(!vendors.Any())
-                return new TopMiniVendorModel { };
+                return new TopMiniVendorModel();
 
             TopMiniVendorModel model = new TopMiniVendorModel();
             List<MiniVendorModel> miniVendors = new List<MiniVendorModel>();
@@ -69,8 +75,13 @@ namespace Nop.Web.Factories
                 var vendorPictures = query.ToList().FirstOrDefault();      
                 var picture = _pictureService.GetPictureById(vendorPictures.PictureId);
 
-                miniVendors.Add(new MiniVendorModel { Id = vendor.Id, Name = vendor.Name, City = vendor.City, PictureUrl = _pictureService.GetPictureUrl(picture) });
-
+                miniVendors.Add(new MiniVendorModel { 
+                        Id = vendor.Id, 
+                        Name = vendor.Name, 
+                        City = vendor.City, 
+                        PictureUrl = _pictureService.GetPictureUrl(picture),
+                        SeName = _urlRecordService.GetSeName(vendor)
+                });
             }
 
             if(miniVendors.Any())

@@ -1,0 +1,14 @@
+﻿div.miniVendorContainer {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+div.miniVendorImg {
+    width: 80%;
+}
+
+.miniVendorText {
+    display: block;
+}

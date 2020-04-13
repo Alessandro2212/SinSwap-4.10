@@ -27,6 +27,8 @@ namespace Nop.Web.Models.MiniVendors
 
         [NopResourceDisplayName("Account.VendorInfo.Picture")]
         public string PictureUrl { get; set; }
-   
+
+        public string SeName { get; set; }
+
     }
 }
