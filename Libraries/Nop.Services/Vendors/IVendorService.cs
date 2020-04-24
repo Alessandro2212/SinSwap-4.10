@@ -70,5 +70,12 @@ namespace Nop.Services.Vendors
         /// <param name="vendorNote">Vendor note</param>
         /// <returns>Formatted text</returns>
         string FormatVendorNoteText(VendorNote vendorNote);
+
+        /// <summary>
+        /// Get All Top 'amount' Vendors (vendors having the highes average reviews)
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        List<Vendor> GetAllTopXVendors(int amount);
     }
 }

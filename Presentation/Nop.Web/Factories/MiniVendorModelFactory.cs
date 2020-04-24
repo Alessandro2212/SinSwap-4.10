@@ -57,9 +57,11 @@ namespace Nop.Web.Factories
         public TopMiniVendorModel PrepareTopMiniVendorModel(int amount)
         {
             //get top X vendors basing on the reviews
-            var vendors = _vendorService.GetAllVendors();
-            
-            if(!vendors.Any())
+            //var vendors = _vendorService.GetAllVendors();
+            var vendors = _vendorService.GetAllTopXVendors(5);
+
+
+            if (!vendors.Any())
                 return new TopMiniVendorModel();
 
             TopMiniVendorModel model = new TopMiniVendorModel();

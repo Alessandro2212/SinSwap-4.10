@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Orders;
 
@@ -212,6 +213,8 @@ namespace Nop.Core.Domain.Customers
             get => _customerAddressMappings ?? (_customerAddressMappings = new List<CustomerAddressMapping>());
             protected set => _customerAddressMappings = value;
         }
+
+        public virtual IList<Customer_Category_Mapping> CustomerCategory { get; set; }
 
         #endregion
     }

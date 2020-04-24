@@ -93,18 +93,14 @@ namespace Nop.Services.Vendors
             return vendors;
         }
 
-        public virtual IPagedList<Vendor> GetAllTopXVendors(string name = "", int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        /// <summary>
+        /// Get All Top 'amount' Vendors (vendors having the highes average reviews)
+        /// </summary>
+        /// <param name="amount">the amount of vendors to return</param>
+        /// <returns></returns>
+        public virtual List<Vendor> GetAllTopXVendors(int amount)
         {
-            var query = _vendorRepository.Table;
-            if (!string.IsNullOrWhiteSpace(name))
-                query = query.Where(v => v.Name.Contains(name));
-            if (!showHidden)
-                query = query.Where(v => v.Active);
-
-            query = query.Where(v => !v.Deleted);
-            query = query.OrderBy(v => v.DisplayOrder).ThenBy(v => v.Name);
-
-            var vendors = new PagedList<Vendor>(query, pageIndex, pageSize);
+            var vendors = _dbContext.EntityFromSql<Vendor>("GetTopXVendors", amount).ToList();
             return vendors;
         }
 

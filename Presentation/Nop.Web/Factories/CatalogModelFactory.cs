@@ -371,6 +371,8 @@ namespace Nop.Web.Factories
                     })
                     .ToList()
                 );
+
+                //var prova = _categoryService.GetAllCustomerCategoryMappings();
             }
 
             var pictureSize = _mediaSettings.CategoryThumbPictureSize;

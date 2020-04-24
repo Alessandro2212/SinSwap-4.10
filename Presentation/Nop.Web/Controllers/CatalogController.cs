@@ -130,7 +130,7 @@ namespace Nop.Web.Controllers
             var model = _catalogModelFactory.PrepareCategoryModel(category, command);
 
             //template
-            var templateViewPath = _catalogModelFactory.PrepareCategoryTemplateViewPath(category.CategoryTemplateId);
+            var templateViewPath = _catalogModelFactory.PrepareCategoryTemplateViewPath(category.CategoryTemplateId); //ritorna la pagina della categoria (es. panties)
             return View(templateViewPath, model);
         }
 

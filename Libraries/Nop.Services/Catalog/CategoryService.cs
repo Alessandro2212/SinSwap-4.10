@@ -35,6 +35,7 @@ namespace Nop.Services.Catalog
         private readonly ILocalizationService _localizationService;
         private readonly IRepository<AclRecord> _aclRepository;
         private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<Customer_Category_Mapping> _customerCategoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<ProductCategory> _productCategoryRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
@@ -58,6 +59,7 @@ namespace Nop.Services.Catalog
             ILocalizationService localizationService,
             IRepository<AclRecord> aclRepository,
             IRepository<Category> categoryRepository,
+            IRepository<Customer_Category_Mapping> customerCategoryRepository,
             IRepository<Product> productRepository,
             IRepository<ProductCategory> productCategoryRepository,
             IRepository<StoreMapping> storeMappingRepository,
@@ -76,6 +78,7 @@ namespace Nop.Services.Catalog
             this._localizationService = localizationService;
             this._aclRepository = aclRepository;
             this._categoryRepository = categoryRepository;
+            this._customerCategoryRepository = customerCategoryRepository;
             this._productRepository = productRepository;
             this._productCategoryRepository = productCategoryRepository;
             this._storeMappingRepository = storeMappingRepository;
@@ -313,6 +316,21 @@ namespace Nop.Services.Catalog
 
             return categories;
         }
+
+        /// <summary>
+        /// Get All Customer Category Mappings
+        /// </summary>
+        /// <returns></returns>
+        public virtual IList<Customer_Category_Mapping> GetAllCustomerCategoryMappings()
+        {
+            var query = from c in _customerCategoryRepository.Table                       
+                        select c;
+
+            var customerCategories = query.ToList();
+           
+            return customerCategories;
+        }
+
 
         /// <summary>
         /// Gets child category identifiers

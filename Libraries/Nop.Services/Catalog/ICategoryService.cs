@@ -192,5 +192,11 @@ namespace Nop.Services.Catalog
         /// <param name="showHidden">A value indicating whether to load hidden records</param>
         /// <returns>Category breadcrumb </returns>
         IList<Category> GetCategoryBreadCrumb(Category category, IList<Category> allCategories = null, bool showHidden = false);
+
+        /// <summary>
+        /// Get All Customer Category Mappings
+        /// </summary>
+        /// <returns></returns>
+        IList<Customer_Category_Mapping> GetAllCustomerCategoryMappings();
     }
 }
