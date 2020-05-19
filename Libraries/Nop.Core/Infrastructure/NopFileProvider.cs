@@ -435,7 +435,10 @@ namespace Nop.Core.Infrastructure
         /// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
         public virtual string MapPath(string path)
         {
-            path = path.Replace("~/", string.Empty).TrimStart('/').Replace('/', '\\');
+            path = Environment.OSVersion.Platform == PlatformID.Win32NT
+                ? path.Replace("~/", string.Empty).TrimStart('/').Replace('/', '\\')
+                : path.Replace("~/", string.Empty).TrimStart('/');
+
             return Path.Combine(BaseDirectory ?? string.Empty, path);
         }
         
